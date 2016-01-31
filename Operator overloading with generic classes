@@ -20,7 +20,7 @@ template <class newType> class Testclass
         }
 };
 
-// One needs to define opertor overloading for every  different type used
+// One needs to define opertor overloading for every different type used
 // following can be used with int data type
 Testclass<int> operator+( const Testclass<int> &lhsObj, const Testclass<int> &rhsObj)
 {
