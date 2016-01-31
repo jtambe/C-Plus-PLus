@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+
+
+template <class newType> class Testclass
+{
+  public:
+        newType t1;
+        newType t2;
+        Testclass()
+        {}
+        Testclass(newType X, newType Y)
+        {
+            t1 = X;
+            t2 = Y;
+        }
+        void Display()
+        {
+            cout << "t1 is:" << t1 << "\t" <<"t2 is:" << t2<< endl ;
+        }
+};
+
+// One needs to define opertor overloading for every  different type used
+// following can be used with int data type
+Testclass<int> operator+( const Testclass<int> &lhsObj, const Testclass<int> &rhsObj)
+{
+    Testclass<int> result(0,0);
+    result.t1 = (lhsObj).t1 + (rhsObj).t1;
+    result.t2 = (lhsObj).t2 + (rhsObj).t2;
+    return result;
+}
+
+int main() 
+{
+   Testclass<int> Obj1 (2,3);
+   Testclass<int> Obj2 (4,5);
+   Testclass<int> Obj3 (0,0);
+   
+   // following syntax does not work for adding two different objects
+   //Testclass<int> Obj3 ();
+   
+   Obj3 = Obj1+ Obj2;
+  
+   Obj3.Display();
+   
+	return 0;
+}
+
+
+/*
+output
+t1 is:6	t2 is:8
+*/
