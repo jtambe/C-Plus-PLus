@@ -1,0 +1,49 @@
+#include <iostream>
+using namespace std;
+
+
+template <class newType1 = string, class newType2= int> class Testclass
+{
+  newType1 t1;
+  newType2 t2;
+  
+  public:
+        Testclass(newType1 X, newType2 Y)
+        {
+            t1 = X;
+            t2 = Y;
+        }
+        
+        void Display()
+        {
+            cout << "t1 is:" << t1 << "\t" <<"t2 is:" << t2<< endl ;
+        }
+  
+  
+};
+
+int main() 
+{
+   Testclass<> Obj1 ("Jayesh",23);
+   Testclass<int, string> Obj2 (23,"Jayesh");
+   Testclass<string, float> Obj3 ("Alena", 76.09);
+   Testclass<string> Obj4("Alena", 90);
+   
+   
+   Obj1.Display();
+   Obj2.Display();
+   Obj3.Display();
+   Obj4.Display();   
+   
+	return 0;
+}
+
+/*
+output
+
+t1 is:Jayesh	t2 is:23
+t1 is:23	t2 is:Jayesh
+t1 is:Alena	t2 is:76.09
+t1 is:Alena	t2 is:90
+
+*/
