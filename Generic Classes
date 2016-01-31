@@ -1,0 +1,44 @@
+#include <iostream>
+using namespace std;
+
+
+template <class newType> class Testclass
+{
+  newType t1;
+  newType t2;
+  
+  public:
+        Testclass(newType X, newType Y)
+        {
+            t1 = X;
+            t2 = Y;
+        }
+        
+        void Display()
+        {
+            cout << "t1 is:" << t1 << "\t" <<"t2 is:" << t2<< endl ;
+        }
+  
+  
+};
+
+int main() 
+{
+   //Testclass<int> intObj= new Testclass<int>(23, 54);
+   Testclass<int> intObj (23, 54);
+   //Testclass<string> stringObj= new Testclass<string>("Jayesh","Alena");
+   Testclass<string> stringObj("Jayesh","Alena");
+   
+   intObj.Display();
+   stringObj.Display();
+
+	return 0;
+}
+
+/*
+output
+
+t1 is:23	t2 is:54
+t1 is:Jayesh	t2 is:Alena
+
+*/
