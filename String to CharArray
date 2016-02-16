@@ -1,0 +1,29 @@
+#include <iostream>
+#include <string.h>   
+using namespace std;
+
+int main()
+{
+    std::string myWord = "myWord";
+    char myArray[myWord.size()+1];//as 1 char space for null is also required
+    strcpy(myArray, myWord.c_str());
+    
+    for(int i = 0 ; i < myWord.size()+1 ; i++)
+    {
+        cout << myArray[i] <<endl;
+    }
+
+
+}
+
+/*
+output 
+
+m
+y
+W
+o
+r
+d
+
+*/
