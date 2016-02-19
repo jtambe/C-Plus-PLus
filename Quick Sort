@@ -1,0 +1,76 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+int partition(int * a, int start, int end);
+void quicksort(int * a,int start, int end);
+
+int partition(int * a, int start, int end){
+
+  int x = a[end];
+  int i = start - 1;
+  for(int j = start ; j < end; j++){
+    if(a[j] <= x){
+      i = i +1;
+      int c;
+      c = a[i];
+      a[i] = a[j];
+      a[j] = c;
+    }
+  }
+  int v;
+  v = a[i+1];
+  a[i+1] = a[end];
+  a[end] = v;
+
+  return i+1;
+}
+
+void quicksort(int * a,int start, int end){
+
+//cout << "Quicksort: " << "start : " << start << " end : " << end << endl;
+
+  if (start < end){
+    int q = partition(a, start , end);
+//   cout << "Partition: " << "start : " << start << " end : " << end << endl;
+
+/*
+    cout << endl;
+    for(int i = 0 ; i < 7 ; i++){
+      cout << a[i] << ",";
+    }
+    cout << endl << endl;
+*/
+
+    quicksort(a, start, q-1);
+//    cout << "Quicksort: " << "start : " << start << " q-1 : " << q-1 << endl;
+
+    quicksort(a, q+1, end);
+//    cout << "Quicksort: " << "q+1 : " << q+1 << " end : " << end << endl;
+
+  }
+
+}
+
+int main(){
+
+int array[] = {42,-3,1,45,0,100,32};
+
+ cout << endl;
+ for(int i = 0 ; i < (sizeof(array)/sizeof(array[0])) ; i++){
+   cout << array[i] << ",";
+ }
+ cout << endl << endl;
+
+quicksort(array, 0, (sizeof(array)/sizeof(array[0]))-1 );
+
+cout << endl << endl;
+
+for(int i = 0 ; i < (sizeof(array)/sizeof(array[0])) ; i++){
+  cout << array[i] << ",";
+}
+cout << endl;
+return 0;
+
+}
