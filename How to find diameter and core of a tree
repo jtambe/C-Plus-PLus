@@ -1,0 +1,151 @@
+#include <iostream>
+#include <vector>
+#include <list>
+using namespace std;
+
+
+
+/*
+Tree class containing BFS method for traversing the adjescency list
+*/
+class Tree{
+
+public:
+int numberOfNodes ;
+int numberOfEdges ;
+
+int BFS(vector< list<int> > &graph, int source,  int * parentArray);
+
+};
+
+/*
+BFS traversal
+
+input
+1. reference to the graph containing adjescency list
+2. source vertex for BFS
+3. poiner to array that contains parents of the vertices in BFS traversal
+
+output
+1. farthest vertex in BFS traversal
+
+*/
+int Tree::BFS(vector< list<int> > &graph, int source, int * parentArray){
+
+  bool * visited = new bool [numberOfNodes];
+  parentArray[source] = source;
+  int s;
+  list<int> queue;
+  queue.push_back(source);
+
+  for(int i = 0 ; i < numberOfNodes ; i++){
+    visited[i] = false;
+  }
+  visited[source] = true;
+
+  while(!queue.empty()){
+
+    s = queue.front();
+    queue.pop_front();
+
+    for (list<int>::iterator listit = graph[s].begin();
+    listit != graph[s].end(); ++listit)
+    {
+      if( !visited[*listit]){
+          queue.push_back(*listit);
+          visited[*listit] = true;
+          parentArray[*listit]= s;
+      }
+    }
+
+  }
+  return s;
+
+}
+
+
+int main(){
+
+  Tree * treeObj  = new Tree();
+  int edgeConnectedTo = -1;
+  cin >> treeObj->numberOfNodes;
+
+  // adjescency list with number of nodes
+  vector< list<int> > graph(treeObj->numberOfNodes);
+
+  // Storing input in adjescency list
+  if(treeObj->numberOfNodes > 0){
+    for(int i =0; i < treeObj->numberOfNodes ; i++){
+        cin >> treeObj->numberOfEdges;
+        for(int j = 0; j < treeObj->numberOfEdges ; j++){
+        cin >> edgeConnectedTo;
+        graph[i].push_back(edgeConnectedTo);
+      }
+    }
+
+    // // traversal of adjescency list
+    // for (vector< list<int> >::iterator vectit = graph.begin();
+    // vectit != graph.end(); ++vectit)
+    // {
+    //     list<int> li = *vectit;
+    //
+    //     for (list<int>::iterator listit = li.begin();
+    //     listit != li.end(); ++listit)
+    //     {
+    //         cout << * listit << " ";
+    //     }
+    //     cout << endl;
+    // }
+
+    int * parentNodeDistanceArray = new int[treeObj->numberOfNodes];
+    int firstNodeOfDiameter = treeObj->BFS(graph, 0, parentNodeDistanceArray);
+    int lastNodeOfDiameter = treeObj->BFS(graph, firstNodeOfDiameter, parentNodeDistanceArray);
+
+    //cout << firstNodeOfDiameter << endl;
+    //cout << lastNodeOfDiameter << endl;
+
+
+    list<int> diameter;
+    diameter.push_back(lastNodeOfDiameter);
+
+      //cout << "lastNodeofDiameter: " << lastNodeofDiameter <<
+      //" firstNodeOfDiameter: " << firstNodeOfDiameter << endl;
+
+    while(lastNodeOfDiameter != firstNodeOfDiameter){
+      int parent = parentNodeDistanceArray[lastNodeOfDiameter];
+      //cout << "parent of " << lastNodeofDiameter <<
+      //" is " << parent << endl;
+      diameter.push_back(parentNodeDistanceArray[lastNodeOfDiameter]);
+      lastNodeOfDiameter = parent;
+    }
+
+    int listSize = diameter.size();
+    int core1, core2 = 0;
+    int count =0;
+    for (list<int>::iterator listit = diameter.begin();
+    listit != diameter.end(); ++listit)
+    {
+      if(count == (listSize/2) -1){
+        core1 = *listit;
+      }
+      if(count == (listSize/2)){
+        core2 = *listit;
+      }
+      count++;
+    }
+    if(listSize%2 == 0){
+      if(core1 < core2){
+        cout << core1 << " "<< core2 << endl;
+      }
+      else{
+        cout << core2 << " "<< core1 << endl;
+      }
+    }
+    else{
+      cout << core2 << endl;
+    }
+
+    return 0;
+  }
+
+}
