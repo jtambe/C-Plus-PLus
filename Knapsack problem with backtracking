@@ -1,0 +1,144 @@
+#include <iostream>
+#include <vector>
+#include <algorithm> // for reverse
+using namespace std;
+
+// Class to hold information about knapsack
+class KnapSack{
+
+  public:
+    int knapSackCapacity;
+    int numberOfItems;
+    int * itemValues;
+    int * itemWeights;
+    vector<int> chosenItems;
+
+    void ReadInput();
+    void FindChosenItems(int itemNumber, int capacity, int ** backTrack);
+
+};
+
+// function to read input file
+// this function reads number of items their weights and stores in arrays
+// input : No inputs for function
+// output : void
+void KnapSack::ReadInput(){
+
+  cin >> numberOfItems >> knapSackCapacity;
+  // remember to delete this memeory
+  this->itemValues = new int [numberOfItems+1];
+  // remember to delete this memeory
+  this->itemWeights = new int [numberOfItems+1];
+  this->itemValues[0] = 0;
+  this->itemWeights[0] = 0;
+
+  for(int i = 1; i < this->numberOfItems+1 ; i++){
+    cin >> this->itemValues[i];
+  }
+  for(int i = 1; i < this->numberOfItems+1 ; i++){
+    cin >> this->itemWeights[i];
+  }
+}
+
+// recursive function to store selected items in knapsack in a vector
+// input :
+// 1. itemnumber = row index of backtrack table
+// 2. capacity = column index of backtrack table
+// 3. **backtrack = pointer to pointer of backtrack table
+// output :
+// 1. void
+void KnapSack::FindChosenItems(int itemNumber, int capacity,
+  int **backTrack){
+
+    if (itemNumber == 0) return;
+    else if( capacity ==
+    (backTrack[itemNumber][capacity]) ){
+       this->FindChosenItems(itemNumber-1, capacity, (int**)backTrack);
+     }
+    else if(capacity !=
+      (backTrack[itemNumber][capacity]) ){
+      this->chosenItems.push_back(itemNumber);
+      this->FindChosenItems(itemNumber-1,(backTrack[itemNumber][capacity]),
+        (int **)backTrack);
+    }
+
+}
+
+int main(){
+
+  KnapSack * bag = new KnapSack(); // remember to delete this memeory
+  bag->ReadInput();
+
+  int ** valueTable = new int *[bag->numberOfItems+1];
+  // remember to delete this memeory
+  int ** backTrack = new int *[bag->numberOfItems+1];
+  // remember to delete this memeory
+
+  for(int i = 0 ; i < bag->numberOfItems+1 ;i++){
+    valueTable[i] = new int[bag->knapSackCapacity+1];
+  }
+  for(int i = 0 ; i < bag->numberOfItems+1 ;i++){
+    backTrack[i] = new int[bag->knapSackCapacity+1];
+  }
+
+  for (int i = 0; i < bag->numberOfItems+1; i++){
+
+  	for (int j = 0; j < bag->knapSackCapacity+1; j++){
+
+  	   if (i==0 || j==0){
+           valueTable[i][j] = 0;
+           backTrack[i][j]  = 0;
+       }
+
+       else if(i == 1 && bag->itemWeights[1] <= j){
+            valueTable[i][j] = bag->itemValues[1];
+            backTrack[i][j] = j - bag->itemWeights[i];
+       }
+
+       else if(bag->itemWeights[i] > j){
+            valueTable[i][j] = valueTable[i-1][j];
+            backTrack[i][j] = j;
+       }
+
+       else if (bag->itemWeights[i] <= j){
+          if (valueTable[i-1][j] >
+              valueTable[i-1][j-bag->itemWeights[i]] + bag->itemValues[i]){
+            valueTable[i][j] = valueTable[i-1][j];
+            backTrack[i][j] = j;
+          }
+          else{
+            valueTable[i][j] = valueTable[i-1][j-bag->itemWeights[i]]
+            + bag->itemValues[i];
+            backTrack[i][j] = j - bag->itemWeights[i];
+          }
+       }
+
+  	}
+  }
+
+  bag->FindChosenItems(bag->numberOfItems,bag->knapSackCapacity
+     ,(int**)backTrack);
+
+  cout << valueTable[bag->numberOfItems][bag->knapSackCapacity] << endl;
+  // reverse the vector for formatting of output
+  reverse(bag->chosenItems.begin(),bag->chosenItems.end());
+  for( vector<int>::iterator vectIt = bag->chosenItems.begin();
+  vectIt != bag->chosenItems.end(); vectIt++){
+    cout << *vectIt << " ";
+  }
+  cout <<endl;
+
+  delete [] bag->itemValues;
+  delete [] bag->itemWeights;
+  delete bag;
+  for(int i = 0; i < bag->numberOfItems+1; i++) {
+    delete [] valueTable[i];
+  }
+  delete [] valueTable;
+
+  for(int i = 0; i < bag->numberOfItems+1; i++) {
+    delete [] backTrack[i];
+  }
+  delete [] backTrack;
+  return 0;
+}
