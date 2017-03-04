@@ -1,5 +1,7 @@
 #include <iostream>
 #include <bitset>
+#include <string>
+
 using namespace std;
 
 //https://www.quora.com/What-are-some-cool-bit-manipulation-tricks-hacks
@@ -56,6 +58,25 @@ void UpdateBits()
 }
 
 
+void ReadBinaryInput()
+{
+	std::bitset<16> foo;
+	std::bitset<16> bar (0xfa2);
+	std::bitset<64> baz (std::string("0000000000000101"));
+
+	std::cout << "foo: " << foo << '\n';
+	std::cout << "bar: " << bar << '\n';
+	std::cout << "baz: " << baz << '\n';
+
+	int sign;
+	string x = baz.to_string();	
+	int v = std::stoi(x,NULL,2); // stoi takes -std=c++11 in compilation flags
+	cout << v << endl;
+	sign = -(v < 0);
+	cout << sign << endl;
+}
+
+
 void ComputeSignOfInt()
 {
 	int v = -1;
@@ -80,7 +101,8 @@ int main()
 {
 
 	UpdateBits();
-	//ComputeSignOfInt();
+	ComputeSignOfInt();
+	ReadBinaryInput();
 	
 
 	// // just random number
